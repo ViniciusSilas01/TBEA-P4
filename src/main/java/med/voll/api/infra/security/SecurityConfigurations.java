@@ -16,14 +16,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-    @Bean
     public SecurityFilterChain
     securityFilterChain(HttpSecurity http)
             throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy
                         (SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(req-> {
+                    req.requestMatchers("/login").permitAll();
+                    System.out.println("2");
+                    req.requestMatchers("/cadastros").permitAll();
+                    req.anyRequest().authenticated();
+                })
                 .build();
+
     }
 
     @Bean

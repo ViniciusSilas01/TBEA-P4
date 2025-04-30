@@ -31,6 +31,11 @@ public class Usuario implements UserDetails{
 
     }
 
+    public Usuario(String login, String senha) {
+        this.login = login;
+        this.senha = senha;
+    }
+
     public String getPassword() {
         return senha;
     }
