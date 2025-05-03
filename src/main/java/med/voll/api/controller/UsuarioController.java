@@ -28,17 +28,20 @@ public class UsuarioController {
     public ResponseEntity cadastro(@RequestBody @Valid DadosCadastroUsuario dados,
                                    UriComponentsBuilder uriBuider) {
 
-    var senhaCriptografada = passwordEncoder.encode(dados.senha());
+        if (repository.findByLogin(dados.login()) != null) {
+            return ResponseEntity.badRequest().body("Login já cadastrado.");
+        }
 
-    var usuario = new Usuario(dados.login(), senhaCriptografada);
-        System.out.println("1");
+        var senhaCriptografada = passwordEncoder.encode(dados.senha());
 
-    repository.save(usuario);
-    var uri = uriBuider.path("cadastros/{id}")
-            .buildAndExpand(usuario.getId()).toUri();
+        var usuario = new Usuario(dados.login(), senhaCriptografada);
 
+        repository.save(usuario);
 
-    return ResponseEntity.created(uri)
+        var uri = uriBuider.path("usuarios/{id}")
+                .buildAndExpand(usuario.getId()).toUri();
+
+        return ResponseEntity.created(uri)
                 .body(new DadosDetalhamentoUsuario(usuario));
 
     }
