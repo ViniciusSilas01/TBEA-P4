@@ -29,7 +29,7 @@ public class UsuarioController {
                                    UriComponentsBuilder uriBuider) {
 
         if (repository.findByLogin(dados.login()) != null) {
-            return ResponseEntity.badRequest().body("Login já cadastrado.");
+            return ResponseEntity.badRequest().body("Login já cadastrado!");
         }
 
         var senhaCriptografada = passwordEncoder.encode(dados.senha());
@@ -45,8 +45,5 @@ public class UsuarioController {
                 .body(new DadosDetalhamentoUsuario(usuario));
 
     }
-
-
-
 
 }
